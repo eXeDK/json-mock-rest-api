@@ -1,0 +1,15 @@
+{
+  "name": "@exedk/git-api",
+  "version": "1.0.0",
+  "description": "Create a RESTfull API based on a GIT repo",
+  "repository": "https://github.com/eXeDK/git-api",
+  "main": "index.js",
+  "author": "Thomas Stig Jacobsen",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.0.2",
+    "restify": "^4.0.3",
+    "underscore": "^1.8.3",
+    "validator": "^4.2.1"
+  }
+}
