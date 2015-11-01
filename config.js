@@ -1,5 +1,6 @@
 'use strict';
 
 module.exports = {
-    data: './data'
+    data: './examples/example1.json',
+    persist: true,
 };

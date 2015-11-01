@@ -1,15 +1,18 @@
 'use strict';
 
+var _ = require('underscore');
 var restify = require('restify');
 var config = require('./config');
+var validateInput = require('./validateInput');
 
 // Load in the data
 var data = require(config.data);
 
 var server = restify.createServer({
-    name: 'GitAPI',
+    name: 'JSON Mock REST API',
     version: '1.0.0'
 });
+server.use(restify.bodyParser());
 
 // Pong
 server.get('ping', (req, res, next) => {
@@ -18,15 +21,16 @@ server.get('ping', (req, res, next) => {
 });
 
 // Loop through all endpoints
-data.forEach((endpoint) => {
+_.keys(data).forEach((endpointName) => {
+    var endpoint = data[endpointName];
     // Create endpoint for getting all data in the endpoint
-    server.get('/' + endpoint.name, (req, res, next) => {
+    server.get('/' + endpointName, (req, res, next) => {
         res.send(200, endpoint.data);
         return next();
     });
 
     // Create endpoint for getting a specific element in the endpoint
-    server.get('/' + endpoint.name + '/:id', (req, res, next) => {
+    server.get('/' + endpointName + '/:id', (req, res, next) => {
         var endPointElement = endpoint.data.find((element) => {
             if (element.id == req.params.id) {
                 return element;
@@ -42,11 +46,13 @@ data.forEach((endpoint) => {
         return next();
     });
 
-    server.post('/' + endpoint.name, (req, res, next) => {
-        // Validate that data supplied was correct
+    server.post('/' + endpointName, validateInput(endpoint.validation), (req, res, next) => {
+        if (config.persist) {
+            // We should persist the data
+        }
 
-        // Tell the developer if there was unexpected data
-
+        res.send(201, req.body);
+        return next();
         // Add data to data and save
     });
 });
