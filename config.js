@@ -2,5 +2,5 @@
 
 module.exports = {
     data: './examples/example1.json',
-    persist: true,
+    persist: true
 };

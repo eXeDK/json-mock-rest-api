@@ -1,7 +1,7 @@
 {
   "name": "@exedk/json-mock-rest-api",
   "version": "1.0.0",
-  "description": "Create a RESTfull API based on a GIT repo",
+  "description": "Create a RESTfull Mock API based on a single JSON file",
   "repository": "https://github.com/eXeDK/json-mock-rest-api",
   "main": "index.js",
   "author": "Thomas Stig Jacobsen",
