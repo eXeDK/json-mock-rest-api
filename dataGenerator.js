@@ -36,4 +36,4 @@ _.keys(data).forEach((endpointName) => {
     }
 });
 
-fs.writeFileSync("dataOutput.json", JSON.stringify(data, null, 2));
+fs.writeFileSync('dataOutput.json', JSON.stringify(data, null, 2));
