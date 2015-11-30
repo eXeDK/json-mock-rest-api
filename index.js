@@ -1,16 +1,16 @@
 'use strict';
 
-var _ = require('underscore');
-var restify = require('restify');
-var fs = require('fs');
-var config = require('./config');
+var _             = require('underscore');
+var restify       = require('restify');
+var fs            = require('fs');
+var config        = require('./config');
 var validateInput = require('./validateInput');
 
 // Load in the data
 var data = require(config.data);
 
 var server = restify.createServer({
-    name: 'JSON Mock REST API',
+    name:    'JSON Mock REST API',
     version: '1.0.0'
 });
 server.use(restify.bodyParser());

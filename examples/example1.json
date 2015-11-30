@@ -9,6 +9,10 @@
         "minLength": 2
       }
     },
+    "generation": {
+      "id": "random.number",
+      "name": "name.findName"
+    },
     "data": [
       {
         "id": 1,
