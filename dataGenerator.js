@@ -11,8 +11,8 @@ var generateRawData = require('./common/generateRawData');
 var cli = commandLineArgs([
     {name: 'input', alias: 'i', type: String},
     {name: 'number', alias: 'n', type: Number, defaultOption: 10},
-    {name: 'debug', alias: 'd', type: Boolean, defaultOption: false},
-    {name: 'replaceData', alias: 'r', type: Boolean, defaultOption: false}
+    {name: 'debug', alias: 'd', type: Boolean},
+    {name: 'replaceData', alias: 'r', type: Boolean}
 ]);
 
 var options = cli.parse();
