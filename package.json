@@ -8,7 +8,9 @@
   "license": "ISC",
   "scripts": {
     "generatePostman": "node ./postmanGenerator.js",
-    "generateData": "node ./dataGenerator.js"
+    "generateData": "node ./dataGenerator.js",
+    "jscs": "jscs . common examples validationRules",
+    "start": "nodemon index.js"
   },
   "dependencies": {
     "bluebird": "^3.0.2",
@@ -18,5 +20,8 @@
     "underscore": "^1.8.3",
     "uuid": "^2.0.1",
     "validator": "^4.2.1"
+  },
+  "devDependencies": {
+    "jscs": "^2.7.0"
   }
 }
