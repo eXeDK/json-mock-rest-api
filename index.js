@@ -109,11 +109,11 @@ _.keys(data).forEach((endpointName) => {
     return next();
   });
 
-  server.on('after', (req, res, route) => {
-    if (config.persist) {
+  server.on('after', (req) => {
+    var alteringMethods = ['POST', 'PUT', 'PATCH', 'DELETE'];
+
+    if (config.persist && _.has(alteringMethods, req.method)) {
       // We should persist the data
-      console.log(res, route);
-      console.log('Current data: ', JSON.stringify(data, null, 2));
       fs.writeFileSync(config.data, JSON.stringify(data, null, 2));
     }
   });
