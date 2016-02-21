@@ -102,7 +102,7 @@ _.keys(data).forEach((endpointName) => {
   if (endpointHasFile(data[endpointName])) {
     postmanData.requests.push({
       id: id,
-      headers: 'Content-Type: application/json\n',
+      headers: '',
       url: 'http://localhost:8080/' + endpointName,
       pathVariables: {},
       preRequestScript: '',
@@ -152,7 +152,7 @@ _.keys(data).forEach((endpointName) => {
   if (endpointHasFile(data[endpointName])) {
     postmanData.requests.push({
       id: id,
-      headers: 'Content-Type: application/json\n',
+      headers: '',
       url: 'http://localhost:8080/' + endpointName + '/:id',
       pathVariables: {},
       preRequestScript: '',
@@ -201,7 +201,7 @@ _.keys(data).forEach((endpointName) => {
   if (endpointHasFile(data[endpointName])) {
     postmanData.requests.push({
       id: id,
-      headers: 'Content-Type: application/json\n',
+      headers: '',
       url: 'http://localhost:8080/' + endpointName + '/:id',
       pathVariables: {},
       preRequestScript: '',
