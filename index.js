@@ -1,13 +1,29 @@
 'use strict';
 
 var fs = require('fs');
+var path = require('path');
+var commandLineArgs = require('command-line-args');
 var _ = require('underscore');
 var restify = require('restify');
-var config = require('./config');
+var uuid = require('uuid');
 var validateInput = require('./validateInput');
 
+// TODO: More validationRules
+// TODO: More datatypes
+
+// Parse parameters
+var cli = commandLineArgs([
+  {name: 'config', alias: 'c', type: String},
+  {name: 'persist', alias: 'p', type: Boolean, defaultOption: true, defaultValue: true}
+]);
+
+var options = cli.parse();
+if (!_.has(options, 'config') || options.config.length == 0) {
+  console.log(cli.getUsage());
+}
+
 // Load in the data
-var data = require(config.data);
+var data = require(options.config);
 
 var server = restify.createServer({
   name: 'JSON Mock REST API',
@@ -24,6 +40,10 @@ server.get('ping', (req, res, next) => {
 // Loop through all endpoints
 _.keys(data).forEach((endpointName) => {
   var endpoint = data[endpointName];
+  if (typeof endpoint.data === 'undefined') {
+    endpoint.data = []
+  }
+
   // Create endpoint for getting all data in the endpoint
   server.get('/' + endpointName, (req, res, next) => {
     res.send(200, endpoint.data);
@@ -51,9 +71,10 @@ _.keys(data).forEach((endpointName) => {
         return next();
       }
 
-      endpoint.data.push(req.body);
+      var handledData = handleData(req.body, req.files);
+      endpoint.data.push(handledData);
 
-      res.send(201, req.body);
+      res.send(201, handledData);
       return next();
       // Add data to data and save
     });
@@ -112,12 +133,43 @@ _.keys(data).forEach((endpointName) => {
   server.on('after', (req) => {
     var alteringMethods = ['POST', 'PUT', 'PATCH', 'DELETE'];
 
-    if (config.persist && _.has(alteringMethods, req.method)) {
+    if (options.persist && _.contains(alteringMethods, req.method)) {
       // We should persist the data
-      fs.writeFileSync(config.data, JSON.stringify(data, null, 2));
+      fs.writeFileSync(
+        options.config,
+        'module.exports = ' + JSON.stringify(data, null, 2) + ";\n"
+      );
     }
   });
 });
+
+function handleData(body, files) {
+  var fileData = _.mapObject(files, function(data) {
+    // Check if 'files' folder is present
+    try {
+      fs.accessSync('./files/', fs.F_OK);
+      // Do something
+    } catch (e) {
+      // It isn't accessible
+      fs.mkdirSync('./files/');
+    }
+
+    // Save file to disk
+    var newFileName = uuid.v4() + path.extname(data.name);
+    var source = fs.createReadStream(data.path);
+    var dest = fs.createWriteStream(
+      './files/' + newFileName
+    );    source.pipe(dest);
+
+    // Return file object
+    return {
+      name: newFileName,
+      type: data.type,
+      path: './files/' + newFileName
+    }
+  });
+  return _.extend({}, body, fileData);
+}
 
 function getElementById(id, collection) {
   return collection.find((element) => {

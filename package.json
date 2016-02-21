@@ -10,7 +10,8 @@
     "generatePostman": "node ./postmanGenerator.js",
     "generateData": "node ./dataGenerator.js",
     "jscs": "jscs . common examples validationRules",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js -- --config=./examples/example2.js",
+    "debug": "PORT=8000 nodemon --debug-brk index.js"
   },
   "dependencies": {
     "bluebird": "^3.0.2",

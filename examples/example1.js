@@ -1,4 +1,4 @@
-{
+module.exports = {
   "customers": {
     "validation": {
       "id": "number",

@@ -15,7 +15,6 @@ module.exports = function validateInput(endpointValidationRules) {
         validateSingleInput('type', elementName, elementValidationRules);
       } else if (typeof elementValidationRules === 'object') {
         // If more than one validation rule was set
-
         _.keys(elementValidationRules).forEach((validationName) => {
           var validationValue = elementValidationRules[validationName];
           validateSingleInput(validationName, elementName, validationValue);
@@ -29,9 +28,10 @@ module.exports = function validateInput(endpointValidationRules) {
     return next();
 
     function validateSingleInput(validationName, elementName, expectedValue) {
+      var inputData = _.extend({}, req.body, req.files);
       var rulePath = './validationRules/' + validationName;
       var validationResult =
-        require(rulePath)(elementName, req.body[elementName], expectedValue);
+        require(rulePath)(elementName, inputData[elementName], expectedValue);
       if (validationResult !== true) {
         return next(validationResult);
       }

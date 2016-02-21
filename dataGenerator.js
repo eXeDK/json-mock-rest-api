@@ -5,25 +5,22 @@ var _ = require('underscore');
 var uuid = require('uuid');
 var fs = require('fs');
 var faker = require('faker');
-var config = require('./config');
 var generateRawData = require('./common/generateRawData');
 
 var cli = commandLineArgs([
-  {name: 'input', alias: 'i', type: String},
+  {name: 'config', alias: 'i', type: String},
   {name: 'number', alias: 'n', type: Number, defaultOption: 10},
   {name: 'debug', alias: 'd', type: Boolean},
   {name: 'replaceData', alias: 'r', type: Boolean}
 ]);
 
 var options = cli.parse();
-console.log(options);
-
-if (!_.has(options, 'input') || options.input.length == 0) {
+if (!_.has(options, 'config') || options.config.length == 0) {
   console.log(cli.getUsage());
 }
 
 // Load in the data
-var data = require(config.data);
+var data = require(options.config);
 
 _.keys(data).forEach((endpointName) => {
   // Make sure there is a data array
